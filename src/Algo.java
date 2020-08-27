@@ -1,5 +1,9 @@
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 import org.openqa.selenium.By;
@@ -18,7 +22,7 @@ public class Algo extends ConnectBot{
 	static String baseurl = "https://www.linkedin.com";
 	static String loginUrl =  baseurl + "/login";
 	static String feedUrl =  baseurl + "/feed";
-	static int pgcount = 1;
+	static int pgcount = 2;
 	static int count = 0;
 	static int limiter = 0;
 	
@@ -47,13 +51,16 @@ public class Algo extends ConnectBot{
 	public static void nextPage() {
 		 String currentUrl = driver.getCurrentUrl();
 		 String nextUrl;
-		 if(currentUrl.contains("&page=")) {
+		 if(currentUrl.contains("&page=") && pgcount < 10 && pgcount > 1) {
 			 nextUrl = currentUrl.substring(0, currentUrl.length() - 1);
 			 nextUrl = nextUrl + pgcount;
-		 } else {
-			 nextUrl = currentUrl + "&page="+ pgcount;
-
+		 } else if(pgcount > 10){
+			 nextUrl = currentUrl.substring(0, currentUrl.length() - 2);
+			 nextUrl = nextUrl + pgcount;
+		 } else{
+			 nextUrl = currentUrl + "&page=" + pgcount;;	 
 		 }
+		 
 		 navigate(nextUrl);
 		 System.out.println("Redirecting to " + nextUrl);
 		 System.out.println("Navigating to Pending Connection Page " + pgcount);
@@ -131,8 +138,8 @@ public class Algo extends ConnectBot{
 				
 				finally {
 					System.out.println("ConnectBot refreshing ...");
-					pgcount++;
-					limiter ++;
+					++pgcount;
+					limiter++;
 				}
 			}
 	 }
@@ -145,7 +152,27 @@ public class Algo extends ConnectBot{
 		String target = targ;
 		int pageLimit = Integer.parseInt(pages);
 		run(username,password,target, pageLimit);
+		driver.close();
+		Date date = new Date();
+		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
 		
+		try {
+		      FileWriter log = new FileWriter("ConnectLog.txt", true);
+		      log.write("************************************* \n");
+		      log.write("\n");
+		      log.write(formatter.format(date) + "\n");
+		      log.write("Search Parameter: ");
+		      log.write(targ + "\n");
+		      log.write("Number of Connections: ");
+		      log.write(count + "\n");
+		      log.write("Number of pages: ");
+		      log.write(pages + "\n");
+		      log.close();
+		      System.out.println("Successfully wrote to the file.");
+		    } catch (IOException e) {
+		      System.out.println("File log error occurred.");
+		      e.printStackTrace();
+		    }
 		System.out.println("ConnectBot TERMINATED ...");
 	}
 }

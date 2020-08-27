@@ -22,10 +22,11 @@ public class ConnectBot implements ActionListener{
 	static JButton run;
 	JButton stop;
 	static JTextField unameEntry;
-	static JTextField passEntry;
+	static JPasswordField passEntry;
 	static JTextField targetEntry;
 	static JTextField pagesEntry;
 	static JLabel title;
+	static JLabel connectionLabel;
 	
 	public ConnectBot() {
 		JFrame frame = new JFrame();
@@ -35,28 +36,26 @@ public class ConnectBot implements ActionListener{
 		JPanel panel = new JPanel();
 		JLabel unameLabel = new JLabel("LinkedIn Username:");
 		JLabel passLabel = new JLabel("LinkedIn Password:");
-		JLabel Message = new JLabel("Note: DO NOT SHARE");
-		unameEntry = new JTextField("john@gmail.com");
-		passEntry = new JTextField("*****");
+		JLabel Message = new JLabel("Check ConnectLog.txt for details");
+		unameEntry = new JTextField("John@gmail.com");
+		passEntry = new JPasswordField(" **** ");
 		JLabel targetLabel = new JLabel("Search target:");
 		JLabel pagesLabel = new JLabel("Pages to process:");
 		targetEntry = new JTextField("Business student Atlanta");
 		pagesEntry = new JTextField("5");
-		connectLabel = new JLabel(connections);
+		connectionLabel = new JLabel("                   By PatraParagons");
 		title = new JLabel("Welcome to ConnectBot!");
-		title.setFont(new Font("Serif", Font.PLAIN, 30));
+		title.setFont(new Font("Serif", Font.PLAIN, 25));
 		
 		run.addActionListener(this);
-//		stop.addActionListener(this);
+
 		Color fg1 = new Color(240, 200, 0);
 		Color fg2 = new Color(250, 250, 250);
 		Color bg = new Color(30, 30, 30);
 		
-		panel.setBorder(BorderFactory.createEmptyBorder(50,50,50,50));
+		panel.setBorder(BorderFactory.createEmptyBorder(30,30,30,30));
 		panel.setBackground(new Color(50, 50, 50));
 		
-//		logo = new ImageIcon("logo.png");
-//		logoLabel.setIcon(logo);
 		
 		title.setForeground(fg1);
 		title.setBackground(bg);
@@ -74,10 +73,13 @@ public class ConnectBot implements ActionListener{
 		Message.setForeground(new Color(250, 0, 0));
 		pagesEntry.setForeground(fg2);
 		pagesLabel.setForeground(fg1);
+		connectionLabel.setForeground(fg1); 
+		connectionLabel.setBackground(bg);
 		
 		panel.setLayout(new GridLayout(0,2));
 		panel.add(title);
-		panel.add(logoLabel);
+		panel.add(connectionLabel);
+//		panel.add(logoLabel);
 		panel.add(unameLabel);
 		panel.add(unameEntry);
 		panel.add(passLabel);
@@ -107,13 +109,13 @@ public class ConnectBot implements ActionListener{
 		// TODO Auto-generated method stub
 			execute = true;	
 			String uname = unameEntry.getText();
-			String pass = passEntry.getText();
+			String pass = String.valueOf(passEntry.getPassword());
 			String targ = targetEntry.getText();
 			String pages = pagesEntry.getText();
 			Algo run = new Algo(uname, pass, targ, pages);
-			connections = connections + Algo.count;
-			connectLabel =  new JLabel(connections);
-			panel.add(connectLabel);
+//			connections = connections + Algo.count;
+//			connectionLabel =  new JLabel(connections);
+//			panel.add(connectionLabel);
 
 	}
 	
