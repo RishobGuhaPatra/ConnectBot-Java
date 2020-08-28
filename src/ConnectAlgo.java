@@ -1,3 +1,4 @@
+package ConnectBot;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.FileWriter;
@@ -16,7 +17,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
 
-public class Algo extends ConnectBot{
+public class ConnectAlgo extends BotGUI{
 	static WebDriver driver;
 	static String currentUrl;
 	static String baseurl = "https://www.linkedin.com";
@@ -145,7 +146,7 @@ public class Algo extends ConnectBot{
 	 }
 	
 
-	public Algo(String uname, String pass, String targ, String pages) {
+	public ConnectAlgo(String uname, String pass, String targ, String pages) {
 		// TODO Auto-generated constructor stub
 		String username = uname;
 		String password = pass;
