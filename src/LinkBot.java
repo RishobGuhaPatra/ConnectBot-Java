@@ -11,7 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
 
-public class BotGUI implements ActionListener{
+public class LinkBot implements ActionListener{
 	static Boolean execute = false;
 	static JLabel connectLabel;
 	static String connections = "Number of connections: ";
@@ -35,7 +35,7 @@ public class BotGUI implements ActionListener{
 	static JLabel Note3;
 	static JLabel StartPage;
 	
-	public BotGUI() {
+	public LinkBot() {
 		JFrame frame = new JFrame();
 		runConnectAlgo = new JButton("Run ConnectBot");
 		runFilterAlgo = new JButton("Run FilterBot");
@@ -135,14 +135,14 @@ public class BotGUI implements ActionListener{
 		
 		frame.add(panel, BorderLayout.CENTER);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setTitle("ConnectBot 1.0");
+		frame.setTitle("LinkBot 2.0");
 		frame.pack();
 		frame.setVisible(true);
 		
 	}
 	
 	public static void main(String[] args) {
-		new BotGUI();
+		new LinkBot();
 	}
 	
 	@Override

@@ -17,7 +17,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
 
-public class ConnectAlgo extends BotGUI{
+public class ConnectAlgo extends LinkBot{
 	static WebDriver driver;
 	static String currentUrl;
 	static String baseurl = "https://www.linkedin.com";

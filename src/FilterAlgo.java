@@ -11,7 +11,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 
-public class FilterAlgo extends BotGUI {
+public class FilterAlgo extends LinkBot {
 	static WebDriver driver;
 	static String currentUrl;
 	static String baseurl = "https://www.linkedin.com";
