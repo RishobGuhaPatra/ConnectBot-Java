@@ -38,7 +38,7 @@ public class LinkBotGUI implements ActionListener {
 	static String connections = "Number of connections: ";
 	static JLabel logoLabel;
 	static JLabel option1, option2;
-	static JComboBox dropdown;
+
 	static JTextField pagelimit;
 	JFrame frame;
 	JPanel panel;
@@ -63,35 +63,34 @@ public class LinkBotGUI implements ActionListener {
 		runConnectAlgo = new JButton("Run ConnectBot");
 		runFilterAlgo = new JButton("Run FilterBot");
 		runDtmAlgo = new JButton("Run DTMBot");
-		dtmNum = new JTextField("Number of messages from top");
+		dtmNum = new JTextField("10");
 		JButton stop = new JButton("Stop");
 		JPanel panel = new JPanel();
 		JLabel unameLabel = new JLabel("LinkedIn Username:");
 		JLabel passLabel = new JLabel("LinkedIn Password:");
-		JLabel Message = new JLabel("FilterBot 2020");
-		unameEntry = new JTextField("rguhapatra@gmail.com");
-		passEntry = new JPasswordField("Eagledtlcruise2020!");
+		JLabel Message = new JLabel("FilterBot | DTM-Bot 2020");
+		unameEntry = new JTextField("");
+		passEntry = new JPasswordField("");
 		JLabel targetLabel = new JLabel("Search target:");
 		JLabel pagesLabel = new JLabel("Pages to process:");
 		targetEntry = new JTextField("Business student Atlanta");
 		pagesEntry = new JTextField("5");
 		connectionLabel = new JLabel("ConnectBot 2020");
 		String options[] = { "Select FilterBot Setting", "Older than 2 Weeks", "Older than 1 Month" };
-		dropdown = new JComboBox(options);
-		title = new JLabel("LinkBot 2.0");
+		title = new JLabel("LinkBot 3.0");
 		title.setFont(new Font("Geneva", Font.PLAIN, 20));
 		connectionLabel.setFont(new Font("Geneva", Font.PLAIN, 14));
 		Message.setFont(new Font("Geneva", Font.PLAIN, 14));
-		pagelimit = new JTextField("10");
+		pagelimit = new JTextField("17");
 		Note1 = new JLabel("See ConnectLog.txt for details");
 		Note2 = new JLabel("See LinkedIn: no. of withdraws");
 		Note3 = new JLabel("EXIT browser to TERMINATE");
 		StartPage = new JLabel("Start page:");
+		JLabel startsite = new JLabel("No. of msgs from the top:");
 
 		runConnectAlgo.addActionListener(this);
 		runFilterAlgo.addActionListener(this);
 		runDtmAlgo.addActionListener(this);
-		dropdown.addActionListener(this);
 
 		// ****** Selections : "More than 2 Weeks Old" & "More than 1 Month Old"
 
@@ -106,7 +105,6 @@ public class LinkBotGUI implements ActionListener {
 		runConnectAlgo.setBackground(fg1);
 		runFilterAlgo.setBackground(fg1);
 		runDtmAlgo.setBackground(fg1);
-		dropdown.setBackground(fg1);
 		title.setBackground(bg);
 		dtmNum.setForeground(fg2);
 		dtmNum.setBackground(bg);
@@ -132,6 +130,7 @@ public class LinkBotGUI implements ActionListener {
 		Note2.setForeground(new Color(0, 100, 200));
 		Note3.setForeground(new Color(250, 0, 0));
 		StartPage.setForeground(fg1);
+		startsite.setForeground(fg1);
 
 		panel.setLayout(new GridLayout(0, 1));
 		panel.add(title);
@@ -148,9 +147,9 @@ public class LinkBotGUI implements ActionListener {
 		panel.add(runConnectAlgo);
 		panel.add(Message);
 		panel.add(StartPage);
-//		panel.add(dropdown);
 		panel.add(pagelimit);
 		panel.add(runFilterAlgo);
+		panel.add(startsite);
 		panel.add(dtmNum);
 		panel.add(runDtmAlgo);
 		panel.add(Note1);
@@ -159,7 +158,7 @@ public class LinkBotGUI implements ActionListener {
 
 		frame.add(panel, BorderLayout.CENTER);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setTitle("LinkBot 2.0");
+		frame.setTitle("LinkBot 3.0");
 		frame.pack();
 		frame.setVisible(true);
 
@@ -184,9 +183,8 @@ public class LinkBotGUI implements ActionListener {
 			String pass = String.valueOf(passEntry.getPassword());
 			String limit = pagelimit.getText();
 			String processPages = pagesEntry.getText();
-			int selection = dropdown.getSelectedIndex();
 			try {
-				FilterAlgo(uname, pass, limit, selection);
+				FilterAlgo(uname, pass, limit);
 			} catch (InterruptedException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
@@ -249,33 +247,33 @@ public class LinkBotGUI implements ActionListener {
 		driver.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
 	}
 
-	public void filterRun(String uname, String pass, int pages, int selection) throws InterruptedException {
+	public void filterRun(String uname, String pass, int pages) throws InterruptedException {
 		System.setProperty("webdriver.chrome.driver", "ChromeDriver/chromedriver");
 		driver = new ChromeDriver();
 		filterLogin(uname, pass);
 		filterNavigate("https://www.linkedin.com/mynetwork/invitation-manager/sent/?invitationType=&page=" + pages);
-		filterWithdraw(selection);
+		filterWithdraw();
 
 	}
 
-	public void filterWithdraw(int selection) throws InterruptedException {
+	public void filterWithdraw() throws InterruptedException {
 		while (true) {
 			Thread.sleep(1000);
 			driver.findElement(By.xpath("//button[contains(., 'Withdraw')]")).click();
 			Thread.sleep(500);
 			driver.findElement(By.xpath("//button[contains(., 'Withdraw')]")).click();
 			filterCount++;
-			System.out.println(filterCount + "withdrawals");
+			System.out.println(filterCount + " withdrawals");
 		}
 
 	}
 
-	public void FilterAlgo(String uname, String pass, String pages, int selection) throws InterruptedException {
+	public void FilterAlgo(String uname, String pass, String pages) throws InterruptedException {
 		String username = uname;
 		String password = pass;
 //			int maxNum = Integer.parseInt(max);
 		int pagesNum = Integer.parseInt(pages);
-		filterRun(uname, pass, pagesNum, selection);
+		filterRun(uname, pass, pagesNum);
 
 		driver.close();
 		Date date = new Date();
@@ -473,11 +471,30 @@ public class LinkBotGUI implements ActionListener {
 		driver.manage().window().maximize();
 		connectLogin(username, password);
 		driver.get("https://www.linkedin.com/mynetwork/invite-connect/connections/");
-//		driver.findElement(By.xpath("/html/body/div[7]/aside/div[1]/header/section[2]/button[2]/li-icon/svg")).click();
 		sendMessage(num);
+		
+		Date date = new Date();
+		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+
+		
+		try {
+			FileWriter log = new FileWriter("ConnectLog.txt", true);
+			log.write("************************************* \n");
+			log.write("\n");
+			log.write(formatter.format(date) + "\n");
+			log.write("Number of messages Sent: ");
+			log.write(num + "\n");
+			log.close();
+			System.out.println("Successfully wrote to the file.");
+		} catch (IOException e) {
+			System.out.println("File log error occurred.");
+			e.printStackTrace();
+		}
+		
+		driver.quit();
 
 	}
-	
+ 	
 	public static String firstName(String fullname) {
 		String firstName = "there";
 		if(fullname.contains(" ")) {
@@ -505,8 +522,9 @@ public class LinkBotGUI implements ActionListener {
 			System.out.println("Message Sent to " + name + " : " + box + "/"+ num);
 			chat.sendKeys(Keys.ENTER);
 			driver.findElement(By.xpath("/html/body/div[7]/aside/div[2]/header/section[2]/button[2]")).click();
-
+			
 		}
 	}
+	
 
 }
